@@ -91,26 +91,20 @@
   <!-- END PRELOADER AREA -->
 
   <!-- Modal musica fondo -->
-  <div id="modalMusica" class="modal fade" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-
-        <div class="modal-body text-center">
-          <p>
-            Bienvenidos a la invitación de Lujan
-          </p>
-
-          <span>La música de fondo es parte de la experiencia</span>
-
-          <br>
-          <a class="boton" id="play-music-modal" href="">Ingresar con música</a>
-          <audio id="myAudio" src="./audio/Taylor Swift - Enchanted.mp3" preload="auto"></audio>
-          <a class="boton" data-dismiss="modal" aria-label="Close" id="" href="">Ingresar sin música</a>
-        </div>
-
+<div id="modalMusica" class="modal fade" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p>Bienvenidos a la invitación de Lujan</p>
+        <span>La música de fondo es parte de la experiencia</span>
+        <br>
+        <a class="boton" id="play-music-modal" href="">Ingresar con música</a>
+        <audio id="myAudio" src="./audio/Taylor Swift - Enchanted.mp3" preload="auto"></audio>
+        <a class="boton" data-dismiss="modal" aria-label="Close" id="" href="">Ingresar sin música</a>
       </div>
     </div>
   </div>
+</div>
 
   <!-- Portada -->
   <section class="portada">
@@ -747,40 +741,53 @@
     
   <script>
     $(document).ready(function() {
-    $('#modalMusica').modal({
-      backdrop: 'static'
-    });
+  $('#modalMusica').modal({
+    backdrop: 'static'
   });
-    // Al cargar abro modal
-    // prealoaderOption.on("load", function() {
-    //   $('#modalMusica').modal({
-    //     backdrop: 'static'
-    //   });
-    // });
 
-    // Btn play music modal
-    $('body').on('click', '#play-music-modal', function(e) {
-      e.preventDefault();
-      var audio = document.getElementById('myAudio');
-      if (audio.paused) {
-        audio.play();
-        animMusicAnimIcon.play();
-      } 
-      $('#modalMusica').modal('hide');
-    });
+  // Btn play music modal
+  $('body').on('click', '#play-music-modal', function(e) {
+    e.preventDefault();
+    var audio = document.getElementById('myAudio');
+    if (audio.paused) {
+      audio.play().then(() => {
+        console.log('Playback started');
+        animMusica.play();
+      }).catch((error) => {
+        console.error('Playback failed:', error);
+      });
+    } 
+    $('#modalMusica').modal('hide');
+  });
 
-    $('body').on('click', '#play-pause-music', function(e) {
-      e.preventDefault();
-      var audio = document.getElementById('myAudio');
-      if (audio.paused) {
-        audio.play();
-        animMusicAnimIcon.play();
-      } else {
-        audio.pause();
-        animMusicAnimIcon.stop();
-        audio.currentTime = 0;
-      }
-    });
+  $('body').on('click', '#play-pause-music', function(e) {
+    e.preventDefault();
+    var audio = document.getElementById('myAudio');
+    if (audio.paused) {
+      audio.play().then(() => {
+        console.log('Playback started');
+        animMusica.play();
+      }).catch((error) => {
+        console.error('Playback failed:', error);
+      });
+    } else {
+      audio.pause();
+      animMusica.stop();
+      audio.currentTime = 0;
+    }
+  });
+});
+  </script>
+
+  <script>
+let svgContainerMusica = document.querySelector('.anim-musica');
+
+let animMusica = bodymovin.loadAnimation({
+  wrapper: svgContainerMusica,
+  animType: 'svg',
+  loop: true,
+  path: _pathProducto + "img/json_musica.json"
+});
   </script>
 
   <!-- Animaciones de diseño -->
@@ -834,20 +841,6 @@
     });
 
     animGaleria.play();
-  </script>
-
-  <!-- Animacion Musica -->
-   <script>
-    let svgContainerMusica = document.querySelector('.anim-musica');
-
-    let animMusica = bodymovin.loadAnimation({
-      wrapper: svgContainerMusica,
-      animType: 'svg',
-      loop: true,
-      path: _pathProducto + "img/json_musica.json"
-    });
-
-    animMusica.play();
   </script>
 
   <!-- Animacion Vestuario -->
